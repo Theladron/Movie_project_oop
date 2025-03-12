@@ -1,24 +1,25 @@
 import movie_storage
 import user_input
 import movie_functions
-
-funct_dict = {
-            0   :   movie_functions.exit_program,
-            1   :   movie_functions.list_movies,
-            2   :   movie_functions.add_movie,
-            3   :   movie_functions.delete_movie,
-            4   :   movie_functions.update_movie,
-            5   :   movie_functions.movie_stats,
-            6   :   movie_functions.random_movie,
-            7   :   movie_functions.search_movie,
-            8   :   movie_functions.sorted_by_rating,
-            9   :   movie_functions.sorted_by_year,
-            10  :   movie_functions.filter_movies
-}
+import storage_json
 
 
 def main():
     """prints menu options, calls for the functions and handles empty dict"""
+    funct_dict = {
+        0: movie_functions.exit_program,
+        1: movie_functions.list_movies,
+        2: movie_functions.add_movie,
+        3: movie_functions.delete_movie,
+        4: movie_functions.update_movie,
+        5: movie_functions.movie_stats,
+        6: movie_functions.random_movie,
+        7: movie_functions.search_movie,
+        8: movie_functions.sorted_by_rating,
+        9: movie_functions.sorted_by_year,
+        10: movie_functions.filter_movies
+    }
+    storage = storage_json.StorageJson("data.json")
     while True:
         print("""********** My Movies Database **********
 
@@ -44,7 +45,7 @@ Menu:
                 " enter '2' and add a movie to the list.")
                 input("Press enter to continue...")
                 continue
-        funct_dict[u_input]()
+        funct_dict[u_input](storage)
 
 
 

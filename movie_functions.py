@@ -3,13 +3,13 @@ import user_input
 import random
 
 
-def exit_program():
+def exit_program(storage):
     """exits the program"""
     print("\nBye!")
     exit()
 
 
-def list_movies():
+def list_movies(storage):
     """
     prints a list of all the movies in the JSON file,
     with year and rating
@@ -20,64 +20,41 @@ def list_movies():
     input("\nPress enter to continue...")
 
 
-def add_movie():
+def add_movie(storage):
     """
     takes user input for a new movie, year and rating,
     calls for saving the input to the JSON File
     """
-    movies = movie_storage.list_movies()
     print("Enter the name of the movie: ", end="")
     title = user_input.u_input("str")
-    for movie in movies:
-        if title.lower() == movie.lower():
-            print(f"The movie {title} already exists.")
-            input("\nPress enter to continue...")
-            return False
     print("Enter the year the movie was created: ", end="")
     year = user_input.u_input("int")
     print("Enter the movie rating: ", end="")
     rating = user_input.add_exception("rating")
-    movie_storage.add_movie(title, year, rating)
-    print(f"The movie '{title}' was added to the list.")
-    input("\nPress enter to continue...")
+    storage.add_movie(title, year, rating)
 
 
-def delete_movie():
+
+def delete_movie(storage):
     """
     takes user input for an existing movie,
     calls for saving the changes in the JSON File
     """
-    movies = movie_storage.list_movies()
     print("Enter the name of the movie: ", end="")
     title = user_input.u_input("str")
-    for movie in movies:
-        if title.lower() == movie.lower():
-            movie_storage.delete_movie(movie)
-            print(f"The movie '{title}' was deleted.")
-            input("\nPress enter to continue...")
-            return
-    print(f"The movie {title} does not exist.")
-    input("\nPress enter to continue...")
+    storage.delete_movie(title)
 
 
-def update_movie():
+def update_movie(storage):
     """
     takes user input for an existing movie and new rating,
     calls for saving the input to the JSON File
     """
-    movies = movie_storage.list_movies()
     print("Enter the name of the movie: ", end="")
     title = user_input.u_input("str")
-    for movie in movies:
-        if title.lower() == movie.lower():
-            print("Enter the movie rating: ", end="")
-            rating = user_input.add_exception("rating")
-            movie_storage.update_movie(movie, rating)
-            print(f"The movie '{title}' was updated")
-            input("\nPress enter to continue...")
-            return
-    print(f"The movie {title} does not exist.")
-    input("\nPress enter to continue...")
+    print("Enter the movie rating: ", end="")
+    rating = user_input.add_exception("rating")
+    storage.update_movie(title, rating)
 
 
 def movie_stats():
