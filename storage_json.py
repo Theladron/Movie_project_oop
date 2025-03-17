@@ -46,7 +46,3 @@ class StorageJson(IStorage):
         movies[title]["rating"] = rating
         with open(self._file_path, "w") as handle:
             handle.write(json.dumps(movies, indent=4))
-
-
-storage = StorageJson('data.json')
-print(storage.list_movies())

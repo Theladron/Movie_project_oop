@@ -1,6 +1,6 @@
-import storage_json
-import user_input
 import random
+
+import user_input
 
 
 class MovieApp:
@@ -21,7 +21,6 @@ class MovieApp:
                       f": {movies[movie]["rating"]}" for movie in movies]
         print("\n".join(movie_list))
 
-
     def _command_add_movie(self):
         """
         takes user input for a new movie, year and rating,
@@ -41,7 +40,6 @@ class MovieApp:
         self._storage.add_movie(title, year, rating)
         print(f"The movie '{title}' was added to the list.")
 
-
     def _command_delete_movie(self):
         """
         takes user input for an existing movie,
@@ -57,7 +55,6 @@ class MovieApp:
                 print(f"The movie '{movie}' was deleted.")
                 return
         print(f"The movie {title} does not exist.")
-
 
     def _command_update_movie(self):
         """
@@ -76,7 +73,6 @@ class MovieApp:
                 return
         print(f"The movie {title} does not exist.")
 
-
     def _command_movie_stats(self):
         """calls for average rating, median rating, best and worst movie """
         movies = self._storage.list_movies()
@@ -86,7 +82,6 @@ class MovieApp:
         self._median_rating(rating_list)
         self._best_movie(movies)
         self._worst_movie(movies)
-
 
     def _avg_rating(self, rating_list):
         """prints average rating for the movie ratings"""
@@ -143,7 +138,6 @@ class MovieApp:
                 break
             counter += 1
 
-
     def _command_search_movie(self):
         """
         takes user input, searches for movies that contain the user input,
@@ -160,7 +154,6 @@ class MovieApp:
         if not movie_found:
             print(f"No movie was found for {user_search}")
 
-
     def _command_sorted_by_rating(self):
         """
         sorts the movies by rating,
@@ -172,7 +165,6 @@ class MovieApp:
         for movie in sort_movies:
             print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
 
-
     def _command_sorted_by_year(self):
         """
         sorts the movies by year,
@@ -183,7 +175,6 @@ class MovieApp:
         print("Movies sorted by year:")
         for movie in sort_movies:
             print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
-
 
     def _command_filter_movies(self):
         """
@@ -215,7 +206,6 @@ class MovieApp:
                 if (movies[movie]["rating"] >= min_rat
                         and start <= movies[movie]["year"] <= end):
                     print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
-
 
     def _generate_website(self):
         pass
