@@ -209,3 +209,5 @@ def filter_movies():
             and start <= movies[movie]["year"] <= end):
                 print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
     input("\nPress enter to continue...")
+
+

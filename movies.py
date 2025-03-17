@@ -1,7 +1,7 @@
 import movie_storage
 import user_input
 import movie_functions
-import storage_json
+from storage_json import StorageJson
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
         9: movie_functions.sorted_by_year,
         10: movie_functions.filter_movies
     }
-    storage = storage_json.StorageJson("data.json")
+    storage = StorageJson("data.json")
     while True:
         print("""********** My Movies Database **********
 
