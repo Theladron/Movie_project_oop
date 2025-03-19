@@ -11,7 +11,7 @@ class StorageJson(IStorage):
     def list_movies(self):
         """
         prints a list of all the movies in the JSON file,
-        with year and rating
+        with year and rating. Handles errors.
         """
         try:
             with open(self._file_path, "r") as handle:

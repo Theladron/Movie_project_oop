@@ -46,6 +46,22 @@ class MovieApp:
             print("Error. The movie does not exist.")
             return
 
+        # testing "Year" entry for integer, using 0 as fallback
+        try:
+            int(movie_data["Year"])
+        except ValueError:
+            try:
+                int(movie_data["Year"][:4])
+                movie_data["Year"] = movie_data["Year"][:4]
+            except ValueError:
+                movie_data["Year"] = 0
+
+        # testing "Rating" entry for integer, using 0 as fallback
+        try:
+            float(movie_data["imdbRating"])
+        except ValueError:
+            movie_data["imdbRating"] = 0.0
+
         self._storage.add_movie(movie_data["Title"],
                                 movie_data["Year"],
                                 movie_data["imdbRating"],
@@ -88,7 +104,7 @@ class MovieApp:
     def _command_movie_stats(self):
         """calls for average rating, median rating, best and worst movie """
         movies = self._storage.list_movies()
-        rating_list = [movies[movie]["rating"] for movie in movies]
+        rating_list = [float(movies[movie]["rating"]) for movie in movies]
         print("Movie statistics\n")
         self._avg_rating(rating_list)
         self._median_rating(rating_list)
@@ -114,27 +130,27 @@ class MovieApp:
 
     def _best_movie(self, movies):
         """prints best movie by rating for the movie ratings"""
-        sort_movies = sorted(movies, key=lambda x: (-movies[x]["rating"], x))
+        sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["rating"]), x))
         check_val = 0
         print("\nBest movie(s):")
         for movie in sort_movies:
-            if movies[movie]["rating"] >= check_val:
-                print(f"{movie} ({movies[movie]["year"]}):"
-                      f" {movies[movie]["rating"]}")
-                check_val = movies[movie]["rating"]
+            if float(movies[movie]["rating"]) >= check_val:
+                print(f"{movie} ({movies[movie]['year']}):"
+                      f" {movies[movie]['rating']}")
+                check_val = float(movies[movie]["rating"])
             else:
                 break
 
     def _worst_movie(self, movies):
         """prints worst movie by rating for the movie ratings"""
-        sort_movies = sorted(movies, key=lambda x: (movies[x]["rating"], x))
+        sort_movies = sorted(movies, key=lambda x: (float(movies[x]["rating"]), x))
         check_val = 10
         print("\nWorst movie(s):")
         for movie in sort_movies:
-            if movies[movie]["rating"] <= check_val:
+            if float(movies[movie]["rating"]) <= check_val:
                 print(f"{movie} ({movies[movie]["year"]}):"
                       f" {movies[movie]["rating"]}")
-                check_val = movies[movie]["rating"]
+                check_val = float(movies[movie]["rating"])
             else:
                 break
 
@@ -172,7 +188,7 @@ class MovieApp:
         prints out movies, year and rating in descending order
          """
         movies = self._storage.list_movies()
-        sort_movies = sorted(movies, key=lambda x: (-movies[x]["rating"], x))
+        sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["rating"]), x))
         print("Movies sorted by rating:")
         for movie in sort_movies:
             print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
@@ -183,7 +199,7 @@ class MovieApp:
         prints out movies, year and rating in descending order
         """
         movies = self._storage.list_movies()
-        sort_movies = sorted(movies, key=lambda x: (-movies[x]["year"], x))
+        sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["year"]), x))
         print("Movies sorted by year:")
         for movie in sort_movies:
             print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
@@ -210,13 +226,13 @@ class MovieApp:
             start = 0
         if not end:
             for movie in movies:
-                if (movies[movie]["rating"] >= min_rat
-                        and movies[movie]["year"] >= start):
+                if (float(movies[movie]["rating"]) >= min_rat
+                        and int(movies[movie]["year"]) >= start):
                     print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
         else:
             for movie in movies:
-                if (movies[movie]["rating"] >= min_rat
-                        and start <= movies[movie]["year"] <= end):
+                if (float(movies[movie]["rating"]) >= min_rat
+                        and start <= int(movies[movie]["year"]) <= end):
                     print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
 
     def _generate_website(self):
