@@ -18,5 +18,10 @@
         "year": "2010",
         "rating": "9.1",
         "poster": "https://m.media-amazon.com/images/M/MV5BN2VlOTY1NzYtM2NlZi00OWZiLWE4ZGItNTViZTVmZmRlOTI3XkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Bla": {
+        "year": "2013",
+        "rating": 0.0,
+        "poster": "N/A"
     }
 }

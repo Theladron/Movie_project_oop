@@ -3,6 +3,7 @@ import os
 import random
 import requests
 import user_input
+from jinja2 import Environment, FileSystemLoader
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -240,7 +241,11 @@ class MovieApp:
                     print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
 
     def _generate_website(self):
-        pass
+        movies = self._storage.list_movies()
+        env = Environment(loader=FileSystemLoader('_static'))
+        with open("index.html", "w") as handle:
+            handle.write(env.get_template("index_template.html").render(movies=movies))
+
 
     def run(self):
         funct_dict = {
@@ -254,7 +259,8 @@ class MovieApp:
             7: self._command_search_movie,
             8: self._command_sorted_by_rating,
             9: self._command_sorted_by_year,
-            10: self._command_filter_movies
+            10: self._command_filter_movies,
+            11: self._generate_website
         }
         while True:
             print("""********** My Movies Database **********
@@ -271,6 +277,7 @@ class MovieApp:
             8. Movies sorted by rating
             9. Movies sorted by year
             10. Filter movies
+            11. Generate Website
 
                 Enter choice (1-10): """, end="")
             u_input = user_input.add_exception("menu")

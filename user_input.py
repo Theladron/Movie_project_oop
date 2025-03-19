@@ -45,7 +45,7 @@ def add_exception(occasion):
         case "menu":
             while True:
                 user_input = u_input("int")
-                if user_input > 10:
+                if user_input > 11:
                     print("Error. Please enter a whole number "
                     "between 0-10: ", end="")
                 else:
