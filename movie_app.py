@@ -1,7 +1,11 @@
+from dotenv import load_dotenv
+import os
 import random
-
+import requests
 import user_input
 
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 class MovieApp:
     def __init__(self, storage):
@@ -33,12 +37,20 @@ class MovieApp:
             if title.lower() == movie.lower():
                 print(f"The movie {title} already exists.")
                 return
-        print("Enter the year the movie was created: ", end="")
-        year = user_input.u_input("int")
-        print("Enter the movie rating: ", end="")
-        rating = user_input.add_exception("rating")
-        self._storage.add_movie(title, year, rating)
-        print(f"The movie '{title}' was added to the list.")
+        response = requests.get("http://www.omdbapi.com/?apikey="+API_KEY+"&t="+title)
+        if not response.status_code == 200:
+            print("Error fetching data. Please check your internet connection.")
+            return
+        movie_data = response.json()
+        if movie_data.get("Response") == "False":
+            print("Error. The movie does not exist.")
+            return
+
+        self._storage.add_movie(movie_data["Title"],
+                                movie_data["Year"],
+                                movie_data["imdbRating"],
+                                movie_data["Poster"])
+        print(f"The movie '{movie_data["Title"]}' was added to the list.")
 
     def _command_delete_movie(self):
         """

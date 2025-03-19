@@ -1,3 +1,5 @@
+from json import JSONDecodeError
+
 from istorage import IStorage
 import json
 
@@ -11,18 +13,25 @@ class StorageJson(IStorage):
         prints a list of all the movies in the JSON file,
         with year and rating
         """
-        with open(self._file_path, "r") as handle:
-            return json.loads(handle.read())
+        try:
+            with open(self._file_path, "r") as handle:
+                return json.loads(handle.read())
+        except FileNotFoundError:
+            return {}
+        except JSONDecodeError:
+            with open(self._file_path, "w") as handle:
+                handle.write("{}")
+            with open(self._file_path, "r") as handle:
+                return json.loads(handle.read())
 
 
-    def add_movie(self, title, year, rating):
+    def add_movie(self, title, year, rating, poster):
         """
         takes user input for a new movie, year and rating,
         calls for saving the input to the JSON File
         """
-        with open(self._file_path, "r") as handle:
-            movies = json.loads(handle.read())
-        movies[title] = {"year": year, "rating": rating}
+        movies = self.list_movies()
+        movies[title] = {"year": year, "rating": rating, "poster":poster}
         with open(self._file_path, "w") as handle:
             handle.write(json.dumps(movies, indent=4))
 

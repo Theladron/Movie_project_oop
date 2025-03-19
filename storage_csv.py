@@ -11,17 +11,27 @@ class StorageCsv(IStorage):
         prints a list of all the movies in the JSON file,
         with year and rating
         """
-        with open(self._file_path, "r") as handle:
-            cvs_data = handle.readlines()
+        try:
+            with open(self._file_path, "r") as handle:
+                cvs_data = handle.readlines()
+        except FileNotFoundError:
+            with open(self._file_path, "w") as handle:
+                handle.write("title,year,rating,poster\n")
+            return {}
+        if len(cvs_data) == 1:
+            return {}
         data = {}
         for line in cvs_data[1:]:
             data_elements = line.split(",")
-            data[data_elements[0]] = {"year" : int(data_elements[1]),
-                                      "rating" : float(data_elements[2][:-1])}
+            data[data_elements[0]] = {
+                                        "year" : int(data_elements[1]),
+                                        "rating" : float(data_elements[2]),
+                                        "poster" : data_elements[3][:-1]
+                                        }
         return data
 
 
-    def add_movie(self, title, year, rating):
+    def add_movie(self, title, year, rating, poster):
         """
         takes user input for a new movie, year and rating,
         calls for saving the input to the JSON File
@@ -29,7 +39,7 @@ class StorageCsv(IStorage):
         with open(self._file_path, "r") as handle:
             movies = handle.read()
 
-        movies += f"{title},{year},{rating}\n"
+        movies += f"{title},{year},{rating},{poster}\n"
 
         with open(self._file_path, "w") as handle:
             handle.write(movies)
