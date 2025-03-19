@@ -1,95 +1,55 @@
-def u_input(string):
-    """
-    gets user input, handles exceptions for input types
-    :param string: the type you want the input to be as str
-    :return: user input
-    """
-    match string:
+def user_string_input(prompt):
+    while True:
+        user_input = input(prompt)
 
-        case "int":
-            while True:
-                try:
-                    user_input = int(input(""))
-                except ValueError:
-                    print("Error. Please enter a whole number: ", end="")
-                else:
-                    if user_input < 0:
-                        print("Error. Please enter a positive, "
-                        "whole number: ", end="")
-                    else:
-                        break
+        if not user_input:
+            break
 
-        case "float":
-            while True:
-                try:
-                    user_input = float(input(""))
-                except ValueError:
-                    print("Error. Please enter a number: ", end="")
-                else:
-                    break
+        elif "year (leave blank for no" in prompt:
+            if user_input.isnumeric():
+                return int(user_input)
+            print("Error. Please leave blank or enter a positive, "
+                  "whole number.")
 
-        case "str":
-            user_input = input("")
-
-    return user_input
+        elif "Enter minimum rating" in prompt:
+            if user_input.isnumeric():
+                return float(user_input)
+            else:
+                test_input = user_input.split(".")
+                if (len(test_input) == 2
+                        and test_input[0].isnumeric()
+                        and test_input[1].isnumeric()):
+                    return float(user_input)
+            print("Error. Please leave blank or enter a positive "
+                  "number.")
+        else:
+            return user_input
 
 
-def add_exception(occasion):
-    """
-    handles additional exceptions for specific user input criteria
-    :param occasion: takes the occasion as str
-    :return: user input
-    """
-    match occasion:
+def user_float_input(prompt):
+    while True:
+        try:
+            user_input = float(input(prompt))
+        except ValueError:
+            print("Error. Please enter a number.")
+        else:
+            return user_input
 
-        case "menu":
-            while True:
-                user_input = u_input("int")
-                if user_input > 11:
-                    print("Error. Please enter a whole number "
-                    "between 0-10: ", end="")
-                else:
-                    break
 
-        case "rating":
-            while True:
-                user_input = u_input("float")
-                if user_input > 10:
-                    print("Error. Please enter a number "
-                    "between 0-10: ", end="")
-                elif user_input < 0:
-                    print("Error. Please enter a positive number "
-                    "between 0-10: ", end="")
-                else:
-                    break
+def user_int_input(prompt):
+    while True:
+        try:
+            user_input = int(input(prompt))
+        except ValueError:
+            print("Error. Please enter a whole number.")
+        else:
 
-        case "range":
-            while True:
-                user_input = u_input("str")
-                if not user_input:
-                    break
-                elif user_input.isnumeric():
-                    user_input = int(user_input)
-                    break
-                print("Error. Please leave blank or enter a positive, "
-                "whole number: ", end="")
+            if user_input < 0:
+                print("Error. Please enter a positive, "
+                      "whole number.")
 
-        case "floatrange":
-            while True:
-                user_input = u_input("str")
-                if not user_input:
-                    break
-                elif user_input.isnumeric():
-                    user_input = float(user_input)
-                    break
-                else:
-                    test_input = user_input.split(".")
-                    if len(test_input) == 2:
-                        if (test_input[0].isnumeric()
-                            and test_input[1].isnumeric()):
-                            user_input = float(user_input)
-                            break
-                    print("Error. Please leave blank or enter a positive "
-                    "number: ", end="")
-
-    return user_input
+            elif "Enter Choice (1-10): " in prompt and user_input > 11:
+                print("Error. Please enter a whole number "
+                      "between 0-10.")
+            else:
+                return user_input

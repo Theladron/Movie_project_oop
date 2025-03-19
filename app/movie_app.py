@@ -12,7 +12,8 @@ class MovieApp:
     def __init__(self, storage):
         self._storage = storage
 
-    def _command_exit_program(self):
+    @staticmethod
+    def _command_exit_program():
         """exits the program"""
         print("bye!")
         exit()
@@ -32,8 +33,7 @@ class MovieApp:
         calls for saving the input
          """
         movies = self._storage.list_movies()
-        print("Enter the name of the movie: ", end="")
-        title = user_input.u_input("str")
+        title = user_input.user_string_input("Enter the name of the movie: ")
         for movie in movies:
             if title.lower() == movie.lower():
                 print(f"The movie {title} already exists.")
@@ -79,8 +79,7 @@ class MovieApp:
         calls for saving the changes
         """
         movies = self._storage.list_movies()
-        print("Enter the name of the movie: ", end="")
-        title = user_input.u_input("str")
+        title = user_input.user_string_input("Enter the name of the movie: ")
 
         for movie in movies:
             if title.lower() == movie.lower():
@@ -99,7 +98,7 @@ class MovieApp:
         title = user_input.u_input("str")
         for movie in movies:
             if title.lower() == movie.lower():
-                print("Enter the movie rating: ", end="")
+                print("Enter comment: ", end="")
                 rating = user_input.add_exception("rating")
                 self._storage.update_movie(movie, rating)
                 print(f"The movie '{title}' was updated")
@@ -117,14 +116,14 @@ class MovieApp:
         self._worst_movie(movies)
 
     @staticmethod
-    def _avg_rating(self, rating_list):
+    def _avg_rating(rating_list):
         """prints average rating for the movie ratings"""
         avg = sum(rating_list)
         print(f"Average movie rating: "
               f"{round(avg / len(rating_list), 1)}")
 
     @staticmethod
-    def _median_rating(self, rating_list):
+    def _median_rating(rating_list):
         """prints median rating for the movie ratings"""
         rating_list.sort()
         if len(rating_list) % 2 != 0:
@@ -136,7 +135,7 @@ class MovieApp:
                        + rating_list[round(len(rating_list) / 2 + 1)]) / 2)}")
 
     @staticmethod
-    def _best_movie(self, movies):
+    def _best_movie(movies):
         """prints best movie by rating for the movie ratings"""
         sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["rating"]), x))
         check_val = 0
@@ -150,7 +149,7 @@ class MovieApp:
                 break
 
     @staticmethod
-    def _worst_movie(self, movies):
+    def _worst_movie(movies):
         """prints worst movie by rating for the movie ratings"""
         sort_movies = sorted(movies, key=lambda x: (float(movies[x]["rating"]), x))
         check_val = 10
@@ -180,9 +179,9 @@ class MovieApp:
         takes user input, searches for movies that contain the user input,
         prints out these movies with year and rating
         """
-        print("Enter part of the movie you want to search for: ", end="")
         movies = self._storage.list_movies()
-        user_search = user_input.u_input("str").lower()
+        user_search = user_input.user_string_input("Enter part of the "
+                                                   "movie you want to search for: ").lower()
         movie_found = False
         for movie in movies:
             if user_search in movie.lower():
@@ -219,15 +218,10 @@ class MovieApp:
         prints the movies matching the users criteria
         """
         movies = self._storage.list_movies()
-        print(f"Enter minimum rating (leave "
-              f"blank for no minimum rating): ", end="")
-        min_rat = user_input.add_exception("floatrange")
-        print(f"Enter start year "
-              f"(leave blank for no start year): ", end="")
-        start = user_input.add_exception("range")
-        print("Enter end year "
-              "(leave blank for no end year): ", end="")
-        end = user_input.add_exception("range")
+        min_rat = user_input.user_string_input("Enter minimum rating "
+                                              "(leave blank for no minimum rating): ")
+        start = user_input.user_string_input("Enter start year (leave blank for no start year): ")
+        end = user_input.user_string_input("Enter end year (leave blank for no end year): ")
         print("Movies that match your criteria:")
         if not min_rat:
             min_rat = 0
@@ -282,9 +276,8 @@ class MovieApp:
             9. Movies sorted by year
             10. Filter movies
             11. Generate Website
-
-                Enter choice (1-10): """, end="")
-            u_input = user_input.add_exception("menu")
+                """)
+            u_input = user_input.user_int_input("Enter choice (1-10): ")
             if not self._storage.list_movies():
                 if not (u_input == 2 or u_input == 0):
                     print("Error. The movie list is empty. Please"
