@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>My Movie App</title>
-    <link rel="stylesheet" href="_static/style.css"/>
+    <link rel="stylesheet" href="../_static/style.css"/>
 </head>
 <body>
 <div class="list-movies-title">
@@ -12,8 +12,10 @@
         {% for movie, stats in movies.items() %}
         <li>
             <div class="movie">
-                <img class="movie-poster"
-                     src="{{ stats['poster'] }}">
+                <div class="image-container">
+                    <div class="tooltip">{{ stats['comment'] }}</div>
+                    <img class="movie-poster" src="{{ stats['poster'] }}">
+                </div>
                 <div class='movie-title'>{{ movie }}</div>
                 <div class="movie-year">{{ stats['year'] }}</div>
             </div>

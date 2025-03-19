@@ -31,7 +31,7 @@ class StorageJson(IStorage):
         calls for saving the input to the JSON File
         """
         movies = self.list_movies()
-        movies[title] = {"year": year, "rating": rating, "poster":poster}
+        movies[title] = {"year": year, "rating": rating, "poster":poster, "comment": ""}
         with open(self._file_path, "w") as handle:
             handle.write(json.dumps(movies, indent=4))
 
@@ -46,12 +46,12 @@ class StorageJson(IStorage):
             handle.write(json.dumps(movies, indent=4))
 
 
-    def update_movie(self, title, rating):
+    def update_movie(self, title, comment):
         """
         takes user input for an existing movie and new rating,
         calls for saving the input to the JSON File
         """
         movies = self.list_movies()
-        movies[title]["rating"] = rating
+        movies[title]["comment"] = comment
         with open(self._file_path, "w") as handle:
             handle.write(json.dumps(movies, indent=4))

@@ -34,6 +34,8 @@ class MovieApp:
          """
         movies = self._storage.list_movies()
         title = user_input.user_string_input("Enter the name of the movie: ")
+        if not title:
+            return
         for movie in movies:
             if title.lower() == movie.lower():
                 print(f"The movie {title} already exists.")
@@ -67,6 +69,10 @@ class MovieApp:
         except ValueError:
             movie_data["imdbRating"] = 0.0
 
+        # Adding Fallback icon in case the movie has no poster
+        if "N/A" in movie_data["Poster"]:
+            movie_data["Poster"] = "_static/fallback_poster.png"
+
         self._storage.add_movie(movie_data["Title"],
                                 movie_data["Year"],
                                 movie_data["imdbRating"],
@@ -80,7 +86,8 @@ class MovieApp:
         """
         movies = self._storage.list_movies()
         title = user_input.user_string_input("Enter the name of the movie: ")
-
+        if not title:
+            return
         for movie in movies:
             if title.lower() == movie.lower():
                 self._storage.delete_movie(movie)
@@ -94,13 +101,13 @@ class MovieApp:
         calls for saving the input
         """
         movies = self._storage.list_movies()
-        print("Enter the name of the movie: ", end="")
-        title = user_input.u_input("str")
+        title = user_input.user_string_input("Enter the name of the movie: ")
+        if not title:
+            return
         for movie in movies:
             if title.lower() == movie.lower():
-                print("Enter comment: ", end="")
-                rating = user_input.add_exception("rating")
-                self._storage.update_movie(movie, rating)
+                comment = user_input.user_string_input("Enter comment: ")
+                self._storage.update_movie(movie, comment)
                 print(f"The movie '{title}' was updated")
                 return
         print(f"The movie {title} does not exist.")
@@ -240,9 +247,10 @@ class MovieApp:
 
     def _generate_website(self):
         movies = self._storage.list_movies()
-        env = Environment(loader=FileSystemLoader('../_static'))
-        with open("../data/index.html", "w") as handle:
+        env = Environment(loader=FileSystemLoader('./_static'))
+        with open("./data/index.html", "w") as handle:
             handle.write(env.get_template("index_template.html").render(movies=movies))
+        print("Website has been generated.")
 
 
     def run(self):

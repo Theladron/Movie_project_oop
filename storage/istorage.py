@@ -14,5 +14,5 @@ class IStorage(ABC):
         pass
 
     @abstractmethod
-    def update_movie(self, title, rating):
+    def update_movie(self, title, comment):
         pass
