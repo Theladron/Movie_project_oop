@@ -5,12 +5,14 @@ def user_string_input(prompt):
         if not user_input:
             break
 
+        # exceptions for start and end year filter
         elif "year (leave blank for no" in prompt:
             if user_input.isnumeric():
                 return int(user_input)
             print("Error. Please leave blank or enter a positive, "
                   "whole number.")
 
+        # exceptions for minimum rating
         elif "Enter minimum rating" in prompt:
             if user_input.isnumeric():
                 return float(user_input)
@@ -43,13 +45,13 @@ def user_int_input(prompt):
         except ValueError:
             print("Error. Please enter a whole number.")
         else:
-
+            # general exception, no input should be negative
             if user_input < 0:
                 print("Error. Please enter a positive, "
                       "whole number.")
-
-            elif "Enter Choice (1-10): " in prompt and user_input > 11:
+            # exception for menu choice
+            elif "Enter Choice (1-11): " in prompt and user_input > 11:
                 print("Error. Please enter a whole number "
-                      "between 0-10.")
+                      "between 0-101.")
             else:
                 return user_input
