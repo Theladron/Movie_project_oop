@@ -37,9 +37,13 @@ class MovieApp:
             if title.lower() == movie.lower():
                 print(f"The movie {title} already exists.")
                 return
-        response = requests.get("http://www.omdbapi.com/?apikey="+API_KEY+"&t="+title)
-        if not response.status_code == 200:
+        try:
+            response = requests.get("http://www.omdbapi.com/?apikey="+API_KEY+"&t="+title)
+        except requests.exceptions.ConnectionError:
             print("Error fetching data. Please check your internet connection.")
+            return
+        if not response.status_code == 200:
+            print("Error fetching data. Database might be busy, please try again later.")
             return
         movie_data = response.json()
         if movie_data.get("Response") == "False":
