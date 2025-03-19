@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 import random
 import requests
-import user_input
+from app import user_input
 from jinja2 import Environment, FileSystemLoader
 
 load_dotenv()
@@ -116,12 +116,14 @@ class MovieApp:
         self._best_movie(movies)
         self._worst_movie(movies)
 
+    @staticmethod
     def _avg_rating(self, rating_list):
         """prints average rating for the movie ratings"""
         avg = sum(rating_list)
         print(f"Average movie rating: "
               f"{round(avg / len(rating_list), 1)}")
 
+    @staticmethod
     def _median_rating(self, rating_list):
         """prints median rating for the movie ratings"""
         rating_list.sort()
@@ -133,6 +135,7 @@ class MovieApp:
                   f"{((rating_list[round(len(rating_list) / 2)]
                        + rating_list[round(len(rating_list) / 2 + 1)]) / 2)}")
 
+    @staticmethod
     def _best_movie(self, movies):
         """prints best movie by rating for the movie ratings"""
         sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["rating"]), x))
@@ -146,6 +149,7 @@ class MovieApp:
             else:
                 break
 
+    @staticmethod
     def _worst_movie(self, movies):
         """prints worst movie by rating for the movie ratings"""
         sort_movies = sorted(movies, key=lambda x: (float(movies[x]["rating"]), x))
@@ -242,8 +246,8 @@ class MovieApp:
 
     def _generate_website(self):
         movies = self._storage.list_movies()
-        env = Environment(loader=FileSystemLoader('_static'))
-        with open("index.html", "w") as handle:
+        env = Environment(loader=FileSystemLoader('../_static'))
+        with open("../data/index.html", "w") as handle:
             handle.write(env.get_template("index_template.html").render(movies=movies))
 
 

@@ -1,6 +1,6 @@
 from json import JSONDecodeError
 
-from istorage import IStorage
+from storage.istorage import IStorage
 import json
 
 class StorageJson(IStorage):

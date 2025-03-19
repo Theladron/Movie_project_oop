@@ -1,5 +1,4 @@
-from istorage import IStorage
-import json
+from storage.istorage import IStorage
 
 class StorageCsv(IStorage):
 
