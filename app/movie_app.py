@@ -1,9 +1,11 @@
-from dotenv import load_dotenv
+import imdb
 import os
 import random
 import requests
+from dotenv import load_dotenv
 from app import user_input
 from jinja2 import Environment, FileSystemLoader
+
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -71,12 +73,22 @@ class MovieApp:
 
         # Adding Fallback icon in case the movie has no poster
         if "N/A" in movie_data["Poster"]:
-            movie_data["Poster"] = "_static/fallback_poster.png"
+            movie_data["Poster"] = "/_static/fallback_poster.png"
+
+        # Adding Fallback value in case the movie cannot be found in IMDB
+        results = imdb.IMDb().search_movie(movie_data["Title"])
+        try:
+            URL = imdb.IMDb().get_imdbURL(results[0])  # URL for first result
+        except IndexError:
+            URL = ""
+        if "_static/fallback_poster.png" in movie_data["Poster"]:
+            URL = ""
 
         self._storage.add_movie(movie_data["Title"],
                                 movie_data["Year"],
                                 movie_data["imdbRating"],
-                                movie_data["Poster"])
+                                movie_data["Poster"],
+                                URL)
         print(f"The movie '{movie_data["Title"]}' was added to the list.")
 
     def _command_delete_movie(self):
@@ -250,7 +262,7 @@ class MovieApp:
         env = Environment(loader=FileSystemLoader('./_static'))
         with open("./data/index.html", "w") as handle:
             handle.write(env.get_template("index_template.html").render(movies=movies))
-        print("Website has been generated.")
+        print("Website was generated successfully.")
 
 
     def run(self):

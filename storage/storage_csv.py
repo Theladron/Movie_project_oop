@@ -23,15 +23,16 @@ class StorageCsv(IStorage):
         for line in cvs_data[1:]:
             data_elements = line.split(",")
             data[data_elements[0]] = {
-                                        "year" : int(data_elements[1]),
-                                        "rating" : float(data_elements[2]),
-                                        "poster" : data_elements[3],
-                                        "comment" : data_elements[4][:-1]
+                                        "year"      : int(data_elements[1]),
+                                        "rating"    : float(data_elements[2]),
+                                        "poster"    : data_elements[3],
+                                        "url"       : data_elements[4],
+                                        "comment"   : data_elements[5][:-1]
                                         }
         return data
 
 
-    def add_movie(self, title, year, rating, poster):
+    def add_movie(self, title, year, rating, poster, url):
         """
         takes user input for a new movie, year and rating,
         calls for saving the input to the JSON File
@@ -39,7 +40,7 @@ class StorageCsv(IStorage):
         with open(self._file_path, "r") as handle:
             movies = handle.read()
 
-        movies += f"{title},{year},{rating},{poster},\n"
+        movies += f"{title},{year},{rating},{poster},{url},\n"
 
         with open(self._file_path, "w") as handle:
             handle.write(movies)
@@ -71,7 +72,7 @@ class StorageCsv(IStorage):
         for line in movies:
             movie_elements = line.split(",")
             if title.lower() == movie_elements[0].lower():
-                line = line.replace(movie_elements[4], comment + "\n")
+                line = line.replace(movie_elements[5], comment + "\n")
             new_movies += line
         with open(self._file_path, "w") as handle:
             handle.write(new_movies)
