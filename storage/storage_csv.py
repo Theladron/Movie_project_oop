@@ -17,6 +17,9 @@ class StorageCsv(IStorage):
             with open(self._file_path, "w") as handle:
                 handle.write("title,year,rating,poster,imdb-url,flag,comment\n")
             return {}
+        if not cvs_data:
+            with open(self._file_path, "w") as handle:
+                handle.write("title,year,rating,poster,imdb-url,flag,comment\n")
         if len(cvs_data) == 1:
             return {}
         data = {}
@@ -27,8 +30,8 @@ class StorageCsv(IStorage):
                                         "rating"    : float(data_elements[2]),
                                         "poster"    : data_elements[3],
                                         "imdb-url"  : data_elements[4],
-                                        "flag"      : data_elements[5],
-                                        "comment"   : data_elements[6][:-1]
+                                        "flag"      : data_elements[5].split("|"),
+                                        "comment"   : data_elements[-1][:-1]
                                         }
         return data
 
@@ -41,7 +44,7 @@ class StorageCsv(IStorage):
         with open(self._file_path, "r") as handle:
             movies = handle.read()
 
-        movies += f"{title},{year},{rating},{poster},{url},{flag},\n"
+        movies += f"{title},{year},{rating},{poster},{url},{"|".join(flag)},\n"
 
         with open(self._file_path, "w") as handle:
             handle.write(movies)
@@ -69,11 +72,11 @@ class StorageCsv(IStorage):
         """
         with open(self._file_path, "r") as handle:
             movies = handle.readlines()
-        new_movies = ""
+        movie_string = ""
         for line in movies:
             movie_elements = line.split(",")
-            if title.lower() == movie_elements[0].lower():
-                line = line.replace(movie_elements[5], comment + "\n")
-            new_movies += line
+            if title in movie_elements[0]:
+                line = line.replace(movie_elements[-1], comment + "\n")
+            movie_string += line
         with open(self._file_path, "w") as handle:
-            handle.write(new_movies)
+            handle.write(movie_string)

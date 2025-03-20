@@ -24,6 +24,8 @@ class MovieApp:
         prints a list of all the movies with year and rating
         """
         movies = self._storage.list_movies()
+        if not movies:
+            return
         movie_list = [f"{movie} ({movies[movie]["year"]})"
                       f": {movies[movie]["rating"]}" for movie in movies]
         print("\n".join(movie_list))
@@ -120,7 +122,7 @@ class MovieApp:
         if not title:
             return
         for movie in movies:
-            if title.lower() == movie.lower():
+            if title.lower() in movie.lower():
                 comment = user_input.user_string_input("Enter comment: ")
                 self._storage.update_movie(movie, comment)
                 print(f"The movie '{title}' was updated")
