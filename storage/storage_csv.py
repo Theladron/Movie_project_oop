@@ -15,7 +15,7 @@ class StorageCsv(IStorage):
                 cvs_data = handle.readlines()
         except FileNotFoundError:
             with open(self._file_path, "w") as handle:
-                handle.write("title,year,rating,poster,comment\n")
+                handle.write("title,year,rating,poster,imdb-url,flag,comment\n")
             return {}
         if len(cvs_data) == 1:
             return {}
@@ -26,13 +26,14 @@ class StorageCsv(IStorage):
                                         "year"      : int(data_elements[1]),
                                         "rating"    : float(data_elements[2]),
                                         "poster"    : data_elements[3],
-                                        "url"       : data_elements[4],
-                                        "comment"   : data_elements[5][:-1]
+                                        "imdb-url"  : data_elements[4],
+                                        "flag"      : data_elements[5],
+                                        "comment"   : data_elements[6][:-1]
                                         }
         return data
 
 
-    def add_movie(self, title, year, rating, poster, url):
+    def add_movie(self, title, year, rating, poster, url, flag):
         """
         takes user input for a new movie, year and rating,
         calls for saving the input to the JSON File
@@ -40,7 +41,7 @@ class StorageCsv(IStorage):
         with open(self._file_path, "r") as handle:
             movies = handle.read()
 
-        movies += f"{title},{year},{rating},{poster},{url},\n"
+        movies += f"{title},{year},{rating},{poster},{url},{flag},\n"
 
         with open(self._file_path, "w") as handle:
             handle.write(movies)

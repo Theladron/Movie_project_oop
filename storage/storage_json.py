@@ -25,7 +25,7 @@ class StorageJson(IStorage):
                 return json.loads(handle.read())
 
 
-    def add_movie(self, title, year, rating, poster, url):
+    def add_movie(self, title, year, rating, poster, url, flag):
         """
         takes user input for a new movie, year and rating,
         calls for saving the input to the JSON File
@@ -35,7 +35,8 @@ class StorageJson(IStorage):
                         "year"     : year,
                         "rating"   : rating,
                         "poster"   : poster,
-                        "url"      : url,
+                        "imdb-url" : url,
+                        "flag"     : flag,
                         "comment"  : ""
                         }
         with open(self._file_path, "w") as handle:

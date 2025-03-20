@@ -13,11 +13,15 @@
         <li>
             <div class="movie">
                 <div class="image-container">
-                    <a href="{{ stats['url'] }}" target="_blank">
+                    <a href="{{ stats['imdb-url'] }}" target="_blank">
                         <div class="tooltip">{{ stats['comment'] }}</div>
                         <img class="movie-poster" src="{{ stats['poster'] }}">
                 </div>
-                <div class='movie-title'>{{ movie }}</div>
+                <div class='movie-title'> {{ movie }}
+                    {% for flag in stats["flag"] %}
+                    <img class="country-flag" src="{{ flag }}" width = 20, height = 10>
+                    {% endfor %}
+                </div>
                 <div class="movie-year">{{ stats['year'] }}     (Rating: {{ stats['rating'] }}/10)</div>
             </div>
         </li>

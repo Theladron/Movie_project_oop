@@ -1,4 +1,3 @@
-import imdb
 import os
 import random
 import requests
@@ -75,20 +74,24 @@ class MovieApp:
         if "N/A" in movie_data["Poster"]:
             movie_data["Poster"] = "/_static/fallback_poster.png"
 
-        # Adding Fallback value in case the movie cannot be found in IMDB
-        results = imdb.IMDb().search_movie(movie_data["Title"])
-        try:
-            URL = imdb.IMDb().get_imdbURL(results[0])  # URL for first result
-        except IndexError:
-            URL = ""
-        if "_static/fallback_poster.png" in movie_data["Poster"]:
-            URL = ""
+
+        flag_url = []
+        if "N/A" in movie_data["Country"]:
+            flag_url.append("/_static/fallback_flag.png")
+        else:
+            countries = movie_data["Country"].split(", ")
+            for country in countries:
+                response = requests.get(f"https://restcountries.com/v3.1/name/{country}")
+                country_data = response.json()
+            # extract the flag
+                flag_url.append(country_data[0]['flags']['png'])
 
         self._storage.add_movie(movie_data["Title"],
                                 movie_data["Year"],
                                 movie_data["imdbRating"],
                                 movie_data["Poster"],
-                                URL)
+                                "https://www.imdb.com/title/" + movie_data["imdbID"] + "/",
+                                flag_url)
         print(f"The movie '{movie_data["Title"]}' was added to the list.")
 
     def _command_delete_movie(self):
