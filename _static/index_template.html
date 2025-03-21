@@ -17,7 +17,8 @@
                         <div class="tooltip">{{ stats['comment'] }}</div>
                         <img class="movie-poster" src="{{ stats['poster'] }}">
                 </div>
-                <div class='movie-title'> {{ movie }}
+                <div class='movie-title'> {{ movie }} </div>
+                <div class="flags">
                     {% for flag in stats["flag"] %}
                     <img class="country-flag" src="{{ flag }}" width = 20, height = 10>
                     {% endfor %}
