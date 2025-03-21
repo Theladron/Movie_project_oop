@@ -14,14 +14,13 @@ class StorageJson(IStorage):
         with year and rating. Handles errors.
         """
         try:
-            with open(self._file_path, "r") as handle:
+            with open(self._file_path, "r", encoding="utf-8") as handle:
                 return json.loads(handle.read())
         except FileNotFoundError:
             return {}
         except JSONDecodeError:
-            with open(self._file_path, "w") as handle:
-                handle.write("{}")
-            with open(self._file_path, "r") as handle:
+            self.save_file("{}")
+            with open(self._file_path, "r", encoding="utf-8") as handle:
                 return json.loads(handle.read())
 
 
@@ -39,8 +38,7 @@ class StorageJson(IStorage):
                         "flag"     : flag,
                         "comment"  : ""
                         }
-        with open(self._file_path, "w") as handle:
-            handle.write(json.dumps(movies, indent=4))
+        self.save_file(movies)
 
     def delete_movie(self, title):
         """
@@ -49,8 +47,7 @@ class StorageJson(IStorage):
         """
         movies = self.list_movies()
         del movies[title]
-        with open (self._file_path, "w") as handle:
-            handle.write(json.dumps(movies, indent=4))
+        self.save_file(movies)
 
 
     def update_movie(self, title, comment):
@@ -60,5 +57,8 @@ class StorageJson(IStorage):
         """
         movies = self.list_movies()
         movies[title]["comment"] = comment
+        self.save_file(movies)
+
+    def save_file(self, movies):
         with open(self._file_path, "w") as handle:
             handle.write(json.dumps(movies, indent=4))

@@ -1,5 +1,5 @@
 body {
-    background-image: linear-gradient(to left, #65e0e0, #309adb);
+    background-image: linear-gradient(to right, #a39272, #54401c);
     color: black;
     font-family: Monaco;
 }
@@ -7,22 +7,20 @@ body {
 .list-movies-title {
     position: sticky;
     top: 0;
-    padding: 10px 0;
-    background: #1a6e13;
-    background-image: linear-gradient(to left, #269426, #1a6e13);
+    background: #ADAD8E;
     border-style:solid;
     border-width: 2px;
-    border-color: #010301;
+    border-color: #630d13;
     border-radius: 10px;
-    color: white;
+    color: #630d13;
     text-align: center;
-    font-size: 18pt;
+    font-size: 16pt;
     font-style: oblique;
     z-index: 5;
 }
 
 .flags {
-    background: #64d0e8;
+    background: #d6a03c;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +63,7 @@ body {
 .movie-title,
 .movie-year {
     text-decoration: none;
-    background: #64d0e8;
+    background: #d6a03c;
     font-size: 0.9em;
     text-align: center;
     font-weight: bold;

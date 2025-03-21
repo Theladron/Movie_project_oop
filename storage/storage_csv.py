@@ -11,11 +11,10 @@ class StorageCsv(IStorage):
         with year and rating
         """
         try:
-            with open(self._file_path, "r") as handle:
+            with open(self._file_path, "r", encoding="utf-8") as handle:
                 cvs_data = handle.readlines()
         except FileNotFoundError:
-            with open(self._file_path, "w") as handle:
-                handle.write("title,year,rating,poster,imdb-url,flag,comment\n")
+            self.save_file("title,year,rating,poster,imdb-url,flag,comment\n")
             return {}
         if not cvs_data:
             with open(self._file_path, "w") as handle:
@@ -41,36 +40,33 @@ class StorageCsv(IStorage):
         takes user input for a new movie, year and rating,
         calls for saving the input to the JSON File
         """
-        with open(self._file_path, "r") as handle:
+        with open(self._file_path, "r", encoding="utf-8") as handle:
             movies = handle.read()
 
         movies += f"{title},{year},{rating},{poster},{url},{"|".join(flag)},\n"
 
-        with open(self._file_path, "w") as handle:
-            handle.write(movies)
+        self.save_file(movies)
 
     def delete_movie(self, title):
         """
         takes user input for an existing movie,
         calls for saving the changes in the JSON File
         """
-        with open(self._file_path, "r") as handle:
+        with open(self._file_path, "r", encoding="utf-8") as handle:
             movies = handle.readlines()
         new_movies = ""
         for line in movies:
             movie_elements = line.split(",")
             if title.lower() != movie_elements[0].lower():
                 new_movies += line
-        with open(self._file_path, "w") as handle:
-            handle.write(new_movies)
-
+        self.save_file(new_movies)
 
     def update_movie(self, title, comment):
         """
         takes user input for an existing movie and new rating,
         calls for saving the input to the JSON File
         """
-        with open(self._file_path, "r") as handle:
+        with open(self._file_path, "r", encoding="utf-8") as handle:
             movies = handle.readlines()
         movie_string = ""
         for line in movies:
@@ -78,5 +74,8 @@ class StorageCsv(IStorage):
             if title in movie_elements[0]:
                 line = line.replace(movie_elements[-1], comment + "\n")
             movie_string += line
+        self.save_file(movie_string)
+
+    def save_file(self, movies):
         with open(self._file_path, "w") as handle:
-            handle.write(movie_string)
+            handle.write(movies)

@@ -1,4 +1,11 @@
+from utils.colors import Colors
+
 def user_string_input(prompt):
+    """
+    Gets the user input, handles exceptions
+    :param prompt: Input description as str
+    :return: User input as str
+    """
     while True:
         user_input = input(prompt)
 
@@ -9,8 +16,8 @@ def user_string_input(prompt):
         elif "year (leave blank for no" in prompt:
             if user_input.isnumeric():
                 return int(user_input)
-            print("Error. Please leave blank or enter a positive, "
-                  "whole number.")
+            print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                  f"Please leave blank or enter a positive, whole number.{Colors.reset}")
 
         # exceptions for minimum rating
         elif "Enter minimum rating" in prompt:
@@ -22,36 +29,32 @@ def user_string_input(prompt):
                         and test_input[0].isnumeric()
                         and test_input[1].isnumeric()):
                     return float(user_input)
-            print("Error. Please leave blank or enter a positive "
-                  "number.")
-        else:
-            return user_input
-
-
-def user_float_input(prompt):
-    while True:
-        try:
-            user_input = float(input(prompt))
-        except ValueError:
-            print("Error. Please enter a number.")
+            print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                  f"Please leave blank or enter a positive number.{Colors.reset}")
         else:
             return user_input
 
 
 def user_int_input(prompt):
+    """
+
+    :param prompt: Input description as str
+    :return: user input as int
+    """
     while True:
         try:
             user_input = int(input(prompt))
         except ValueError:
-            print("Error. Please enter a whole number.")
+            print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                  f"Please enter a whole number.{Colors.reset}")
         else:
             # general exception, no input should be negative
             if user_input < 0:
-                print("Error. Please enter a positive, "
-                      "whole number.")
+                print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                      f"Please enter a positive, whole number.{Colors.reset}")
             # exception for menu choice
             elif "Enter Choice (1-11): " in prompt and user_input > 11:
-                print("Error. Please enter a whole number "
-                      "between 0-101.")
+                print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                      f"Please enter a whole number between 0-101.{Colors.reset}")
             else:
                 return user_input

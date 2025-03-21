@@ -2,9 +2,9 @@ import os
 import random
 import requests
 from dotenv import load_dotenv
-from app import user_input
+from app.user_input import user_int_input, user_string_input
 from jinja2 import Environment, FileSystemLoader
-
+from utils.colors import Colors
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -16,7 +16,7 @@ class MovieApp:
     @staticmethod
     def _command_exit_program():
         """exits the program"""
-        print("bye!")
+        print(f"{Colors.orange}bye!{Colors.reset}")
         exit()
 
     def _command_list_movies(self):
@@ -26,8 +26,9 @@ class MovieApp:
         movies = self._storage.list_movies()
         if not movies:
             return
-        movie_list = [f"{movie} ({movies[movie]["year"]})"
-                      f": {movies[movie]["rating"]}" for movie in movies]
+        print(f"{Colors.orange}\nMovies in the database:{Colors.reset}")
+        movie_list = [(f"{movie} ({movies[movie]["year"]}) {Colors.blue}{movies[movie]["rating"]}"
+                       f"{Colors.reset}") for movie in movies]
         print("\n".join(movie_list))
 
     def _command_add_movie(self):
@@ -36,24 +37,29 @@ class MovieApp:
         calls for saving the input
          """
         movies = self._storage.list_movies()
-        title = user_input.user_string_input("Enter the name of the movie: ")
+        title = user_string_input(f"{Colors.green}Enter the name of "
+                                             f"the movie (leave blank to return"
+                                             f" to menu): {Colors.reset}")
         if not title:
             return
         for movie in movies:
             if title.lower() == movie.lower():
-                print(f"The movie {title} already exists.")
+                print(f"The movie {Colors.blue}{title}{Colors.reset} already exists.")
                 return
         try:
             response = requests.get("http://www.omdbapi.com/?apikey="+API_KEY+"&t="+title)
         except requests.exceptions.ConnectionError:
-            print("Error fetching data. Please check your internet connection.")
+            print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red} "
+                  f"fetching data. Please check your internet connection.{Colors.reset}")
             return
         if not response.status_code == 200:
-            print("Error fetching data. Database might be busy, please try again later.")
+            print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red} fetching data. "
+                  f"Database might be busy, please try again later.{Colors.reset}")
             return
         movie_data = response.json()
         if movie_data.get("Response") == "False":
-            print("Error. The movie does not exist.")
+            print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                  f"The movie does not exist.{Colors.reset}")
             return
 
         # testing "Year" entry for integer, using 0 as fallback
@@ -94,7 +100,7 @@ class MovieApp:
                                 movie_data["Poster"],
                                 "https://www.imdb.com/title/" + movie_data["imdbID"] + "/",
                                 flag_url)
-        print(f"The movie '{movie_data["Title"]}' was added to the list.")
+        print(f"The movie {Colors.blue}{movie_data["Title"]}{Colors.reset} was added to the list.")
 
     def _command_delete_movie(self):
         """
@@ -102,15 +108,16 @@ class MovieApp:
         calls for saving the changes
         """
         movies = self._storage.list_movies()
-        title = user_input.user_string_input("Enter the name of the movie: ")
+        title = user_string_input(f"{Colors.green}Enter the name of the "
+                                             f"movie: {Colors.reset}")
         if not title:
             return
         for movie in movies:
             if title.lower() == movie.lower():
                 self._storage.delete_movie(movie)
-                print(f"The movie '{movie}' was deleted.")
+                print(f"The movie {Colors.blue}{movie}{Colors.reset} was deleted.")
                 return
-        print(f"The movie {title} does not exist.")
+        print(f"The movie {Colors.blue}{title}{Colors.reset} does not exist.")
 
     def _command_update_movie(self):
         """
@@ -118,22 +125,24 @@ class MovieApp:
         calls for saving the input
         """
         movies = self._storage.list_movies()
-        title = user_input.user_string_input("Enter the name of the movie: ")
+        title = user_string_input(f"{Colors.green}Enter the name of the "
+                                             f"{Colors.blue}movie{Colors.green}: {Colors.reset}")
         if not title:
             return
         for movie in movies:
             if title.lower() in movie.lower():
-                comment = user_input.user_string_input("Enter comment: ")
+                comment = user_string_input(f"{Colors.green}Enter "
+                                                       f"comment: {Colors.reset}")
                 self._storage.update_movie(movie, comment)
-                print(f"The movie '{title}' was updated")
+                print(f"The movie '{Colors.blue}{title}{Colors.reset}' was updated")
                 return
-        print(f"The movie {title} does not exist.")
+        print(f"The movie {Colors.blue}{title}{Colors.reset} does not exist.")
 
     def _command_movie_stats(self):
         """calls for average rating, median rating, best and worst movie """
         movies = self._storage.list_movies()
         rating_list = [float(movies[movie]["rating"]) for movie in movies]
-        print("Movie statistics\n")
+        print(f"{Colors.orange}Movie statistics\n{Colors.reset}")
         self._avg_rating(rating_list)
         self._median_rating(rating_list)
         self._best_movie(movies)
@@ -143,31 +152,31 @@ class MovieApp:
     def _avg_rating(rating_list):
         """prints average rating for the movie ratings"""
         avg = sum(rating_list)
-        print(f"Average movie rating: "
-              f"{round(avg / len(rating_list), 1)}")
+        print(f"{Colors.cyan}Average movie rating: {Colors.blue}"
+              f"{round(avg / len(rating_list), 1)}{Colors.reset}")
 
     @staticmethod
     def _median_rating(rating_list):
         """prints median rating for the movie ratings"""
         rating_list.sort()
         if len(rating_list) % 2 != 0:
-            print(f"Median movie rating: "
-                  f"{rating_list[round(len(rating_list) / 2)]}")
+            print(f"{Colors.cyan}Median movie rating: {Colors.blue}"
+                  f"{rating_list[round(len(rating_list) / 2)]}{Colors.reset}")
         else:
-            print(f"Median movie rating: "
+            print(f"Median movie rating: {Colors.blue}"
                   f"{((rating_list[round(len(rating_list) / 2)]
-                       + rating_list[round(len(rating_list) / 2 + 1)]) / 2)}")
+                       + rating_list[round(len(rating_list) / 2 + 1)]) / 2)}{Colors.reset}")
 
     @staticmethod
     def _best_movie(movies):
         """prints best movie by rating for the movie ratings"""
         sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["rating"]), x))
         check_val = 0
-        print("\nBest movie(s):")
+        print(f"{Colors.cyan}\nBest movie(s):{Colors.reset}")
         for movie in sort_movies:
             if float(movies[movie]["rating"]) >= check_val:
                 print(f"{movie} ({movies[movie]['year']}):"
-                      f" {movies[movie]['rating']}")
+                      f" {Colors.blue}{movies[movie]['rating']}{Colors.reset}")
                 check_val = float(movies[movie]["rating"])
             else:
                 break
@@ -177,11 +186,11 @@ class MovieApp:
         """prints worst movie by rating for the movie ratings"""
         sort_movies = sorted(movies, key=lambda x: (float(movies[x]["rating"]), x))
         check_val = 10
-        print("\nWorst movie(s):")
+        print(f"{Colors.cyan}\nWorst movie(s):{Colors.reset}")
         for movie in sort_movies:
             if float(movies[movie]["rating"]) <= check_val:
                 print(f"{movie} ({movies[movie]["year"]}):"
-                      f" {movies[movie]["rating"]}")
+                      f" {Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
                 check_val = float(movies[movie]["rating"])
             else:
                 break
@@ -191,10 +200,11 @@ class MovieApp:
         movies = self._storage.list_movies()
         r_number = random.randint(0, len(movies))
         counter = 0
-        print("Your movie of choice is:")
+        print(f"{Colors.cyan}Your movie of choice is:{Colors.reset}")
         for movie in movies:
             if counter == r_number:
-                print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
+                print(f"{movie} ({movies[movie]["year"]}): "
+                      f"{Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
                 break
             counter += 1
 
@@ -204,15 +214,17 @@ class MovieApp:
         prints out these movies with year and rating
         """
         movies = self._storage.list_movies()
-        user_search = user_input.user_string_input("Enter part of the "
-                                                   "movie you want to search for: ").lower()
+        user_search = user_input.user_string_input(f"{Colors.green}Enter part of the "
+                                                   f"movie you want to search for:"
+                                                   f" {Colors.reset}").lower()
         movie_found = False
         for movie in movies:
             if user_search in movie.lower():
-                print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
+                print(f"{movie} ({movies[movie]["year"]}): "
+                      f"{Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
                 movie_found = True
         if not movie_found:
-            print(f"No movie was found for {user_search}")
+            print(f"{Colors.red}No movie was found for {Colors.blue}{user_search}{Colors.reset}")
 
     def _command_sorted_by_rating(self):
         """
@@ -221,9 +233,10 @@ class MovieApp:
          """
         movies = self._storage.list_movies()
         sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["rating"]), x))
-        print("Movies sorted by rating:")
+        print(f"{Colors.cyan}Movies sorted by rating:{Colors.reset}")
         for movie in sort_movies:
-            print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
+            print(f"{movie} ({movies[movie]["year"]}): "
+                  f"{Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
 
     def _command_sorted_by_year(self):
         """
@@ -232,9 +245,10 @@ class MovieApp:
         """
         movies = self._storage.list_movies()
         sort_movies = sorted(movies, key=lambda x: (-float(movies[x]["year"]), x))
-        print("Movies sorted by year:")
+        print(f"{Colors.cyan}Movies sorted by year:{Colors.reset}")
         for movie in sort_movies:
-            print(f"{movie} ({movies[movie]["year"]}): {movies[movie]["rating"]}")
+            print(f"{movie} ({movies[movie]["year"]}): "
+                  f"{Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
 
     def _command_filter_movies(self):
         """
@@ -242,11 +256,16 @@ class MovieApp:
         prints the movies matching the users criteria
         """
         movies = self._storage.list_movies()
-        min_rat = user_input.user_string_input("Enter minimum rating "
-                                              "(leave blank for no minimum rating): ")
-        start = user_input.user_string_input("Enter start year (leave blank for no start year): ")
-        end = user_input.user_string_input("Enter end year (leave blank for no end year): ")
-        print("Movies that match your criteria:")
+        min_rat = user_string_input(f"{Colors.green}Enter {Colors.blue}minimum rating"
+                                               f"{Colors.green} (leave blank for no minimum "
+                                               f"rating): {Colors.reset}")
+        start = user_string_input(f"{Colors.green}Enter {Colors.blue}start year"
+                                             f"{Colors.green} (leave blank for no "
+                                             f"start year): {Colors.reset}")
+        end = user_string_input(f"{Colors.green}Enter {Colors.blue}end year"
+                                           f"{Colors.green} (leave blank for no "
+                                           f"end year): {Colors.reset}")
+        print(f"{Colors.cyan}Movies that match your criteria:{Colors.reset}")
         if not min_rat:
             min_rat = 0
         if not start:
@@ -267,7 +286,7 @@ class MovieApp:
         env = Environment(loader=FileSystemLoader('./_static'))
         with open("./data/index.html", "w") as handle:
             handle.write(env.get_template("index_template.html").render(movies=movies))
-        print("Website was generated successfully.")
+        print(f"{Colors.orange}Website was generated successfully.{Colors.reset}")
 
 
     def run(self):
@@ -286,28 +305,29 @@ class MovieApp:
             11: self._generate_website
         }
         while True:
-            print("""********** My Movies Database **********
+            print(f"""{Colors.orange}********** My Movies Database **********{Colors.reset}
 
-            Menu:
-            0. Exit
-            1. List movies
-            2. Add movie
-            3. Delete movie
-            4. Update movie
-            5. Stats
-            6. Random movie
-            7. Search movie
-            8. Movies sorted by rating
-            9. Movies sorted by year
-            10. Filter movies
-            11. Generate Website
+            {Colors.bold}{Colors.cyan}Menu:{Colors.reset}
+            {Colors.blue}0.{Colors.reset} Exit
+            {Colors.blue}1.{Colors.reset} List movies
+            {Colors.blue}2.{Colors.reset} Add movie
+            {Colors.blue}3.{Colors.reset} Delete movie
+            {Colors.blue}4.{Colors.reset} Update movie
+            {Colors.blue}5.{Colors.reset} Stats
+            {Colors.blue}6.{Colors.reset} Random movie
+            {Colors.blue}7.{Colors.reset} Search movie
+            {Colors.blue}8.{Colors.reset} Movies sorted by rating
+            {Colors.blue}9.{Colors.reset} Movies sorted by year
+            {Colors.blue}10.{Colors.reset} Filter movies
+            {Colors.blue}11.{Colors.reset} Generate Website
                 """)
-            u_input = user_input.user_int_input("Enter choice (1-10): ")
+            u_input = user_int_input(f"{Colors.blue}Enter choice (1-10): {Colors.reset}")
             if not self._storage.list_movies():
                 if not (u_input == 2 or u_input == 0):
-                    print("Error. The movie list is empty. Please"
-                          " enter '2' and add a movie to the list.")
-                    input("Press enter to continue...")
+                    print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
+                          f"The movie list is empty. Please enter {Colors.blue}2{Colors.reset} "
+                          f"and add a movie to the list.{Colors.reset}")
+                    input(f"{Colors.orange}Press enter to continue...{Colors.reset}")
                     continue
             funct_dict[u_input]()
-            input("\nPress enter to continue...")
+            input(f"{Colors.orange}\nPress enter to continue...{Colors.reset}")
