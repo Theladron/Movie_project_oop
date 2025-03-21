@@ -55,6 +55,7 @@ body {
     border-style:solid;
     border-radius: 5px;
     border-width: 2px;
+    transition: transform 0.3s ease
 }
 
 .movie-title,
@@ -103,8 +104,8 @@ body {
     opacity: 1;
 }
 
-.movie-title:hover {
-    text-decoration: underline;
+.movie:hover {
+    transform: scale(1.1);
 }
 
 
