@@ -118,7 +118,7 @@ body {
 @media (max-width: 576px) {
 
 .list-movies-title {
-    max-height: 40%;
+    max-height: 100%;
     height:auto;
 }
 
@@ -127,6 +127,39 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.movie {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+}
+
+.movie-poster {
+    margin-right: 20px;
+}
+
+.movie-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flags, .movie-title, .movie-year {
+    margin-right: 20px;
+    margin-bottom: 10px;
+    background: none; /* Hintergrundfarbe entfernen */
+}
+
+.movie-title {
+    font-size: 24px;
+}
+.movie-stats {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 }
