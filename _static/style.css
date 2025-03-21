@@ -31,7 +31,7 @@ body {
 }
 
 .image-container {
-    position: relative; /* Container für die absolute Positionierung */
+    position: relative;
 }
 
 .movie-grid {
@@ -149,7 +149,7 @@ body {
 .flags, .movie-title, .movie-year {
     margin-right: 20px;
     margin-bottom: 10px;
-    background: none; /* Hintergrundfarbe entfernen */
+    background: none;
 }
 
 .movie-title {

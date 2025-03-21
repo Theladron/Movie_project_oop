@@ -1,5 +1,5 @@
 class Colors:
-    """different colors, format bold for print statements, reset for normal font"""
+    """Represents different colors, format bold for print statements, reset for normal font"""
     reset = '\033[0m'
     bold = '\033[01m'
 
@@ -8,5 +8,3 @@ class Colors:
     green = '\033[32m'
     blue = '\033[34m'
     cyan = '\033[36m'
-
-
