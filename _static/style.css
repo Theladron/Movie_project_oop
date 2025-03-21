@@ -1,23 +1,25 @@
 body {
-  background-image: linear-gradient(to left, #65e0e0, #309adb);
-  color: black;
-  font-family: Monaco;
+    background-image: linear-gradient(to left, #65e0e0, #309adb);
+    color: black;
+    font-family: Monaco;
 }
+
 .list-movies-title {
-position: sticky;
-  top: 0;
-  padding: 10px 0;
-  background: #1a6e13;
-  background-image: linear-gradient(to left, #269426, #1a6e13);
-  border-style:solid;
-  border-width: 2px;
-  border-color: #010301;
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-  font-size: 18pt;
-  font-style: oblique;
+    position: sticky;
+    top: 0;
+    padding: 10px 0;
+    background: #1a6e13;
+    background-image: linear-gradient(to left, #269426, #1a6e13);
+    border-style:solid;
+    border-width: 2px;
+    border-color: #010301;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-size: 18pt;
+    font-style: oblique;
 }
+
 .flags {
     background: #64d0e8;
     display: flex;
@@ -27,6 +29,10 @@ position: sticky;
 
 .country-flag {
     margin: 4px;
+}
+
+.image-container {
+    position: relative; /* Container für die absolute Positionierung */
 }
 
 .movie-grid {
@@ -40,33 +46,33 @@ position: sticky;
 }
 
 .movie-grid li {
-  padding: 10px 15px;
-  text-align: left;
+    padding: 10px 15px;
+    text-align: left;
 }
 
 .movie {
-  width: 140px;
-  border-style:solid;
-  border-radius: 5px;
-  border-width: 2px;
+    width: 140px;
+    border-style:solid;
+    border-radius: 5px;
+    border-width: 2px;
 }
 
 .movie-title,
 .movie-year {
-  text-decoration: none;
-  background: #64d0e8;
-  font-size: 0.9em;
-  text-align: center;
-  font-weight: bold;
+    text-decoration: none;
+    background: #64d0e8;
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: bold;
 }
 
 .movie-title {
-  color: #040b12;
-  font-size: 1.1em;
+    color: #040b12;
+    font-size: 1.1em;
 }
 
 .movie-year {
-  color: #081708;
+    color: #081708;
 }
 
 
@@ -77,14 +83,18 @@ position: sticky;
 }
 
 .tooltip {
+    position: absolute;
     visibility: invisible;
     background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
     text-align: center;
     border-radius: 5px;
-    position: absolute;
-    transform: translateY(-100%);
+    padding: 5px;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-3px);
     opacity: 0;
+    white-space: nowrap;
     transition: opacity 0.3s;
 }
 
@@ -92,15 +102,19 @@ position: sticky;
     visibility: visible;
     opacity: 1;
 }
+
 .movie-title:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
+
+
 @media (max-width: 576px) {
 
 .list-movies-title {
     max-height: 40%;
     height:auto;
 }
+
 .movie-grid {
   margin-top: 10px;
   flex-direction: column;
