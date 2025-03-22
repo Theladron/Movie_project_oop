@@ -16,18 +16,15 @@ class StorageJson(IStorage):
 
     def list_movies(self):
         """
-        reads it's json database
+        reads the json database with the initialized file name
         :return: json file as dictionary
         """
         try:
             with open(self._file_path, "r", encoding="utf-8") as handle:
                 return json.loads(handle.read())
-        except FileNotFoundError:
-            return {}
-        except JSONDecodeError:
+        except (FileNotFoundError, JSONDecodeError):
             self.save_file("{}")
-            with open(self._file_path, "r", encoding="utf-8") as handle:
-                return json.loads(handle.read())
+            return {}
 
     def add_movie(self, title, year, rating, poster, url, flag):
         """
