@@ -52,7 +52,9 @@ body {
 
 .movie {
     position: relative;
-    width: 140px;
+    background: #d6a03c;
+    width: 17.5vh;
+    height: 34vh;
     border-style:solid;
     border-radius: 5px;
     border-width: 2px;
@@ -63,7 +65,6 @@ body {
 .movie-title,
 .movie-year {
     text-decoration: none;
-    background: #d6a03c;
     font-size: 0.9em;
     text-align: center;
     font-weight: bold;
@@ -131,6 +132,7 @@ body {
 
 .movie {
     display: flex;
+    max-width: 19em;
     flex-direction: row;
     align-items: center;
     width: auto;

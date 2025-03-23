@@ -11,7 +11,7 @@ def user_string_input(prompt):
         user_input = input(prompt)
 
         if not user_input:
-            break
+            return user_input
 
         # exceptions for start and end year filter
         elif f"year{Colors.green} (leave blank for no" in prompt:
@@ -49,13 +49,15 @@ def user_int_input(prompt):
             print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
                   f"Please enter a whole number.{Colors.reset}")
         else:
+
             # general exception, no input should be negative
             if user_input < 0:
                 print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
                       f"Please enter a positive, whole number.{Colors.reset}")
+
             # exception for menu choice
             elif "Enter Choice (1-11): " in prompt and user_input > 11:
                 print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
-                      f"Please enter a whole number between 0-101.{Colors.reset}")
+                      f"Please enter a whole number between 0-11.{Colors.reset}")
             else:
                 return user_input
