@@ -28,6 +28,7 @@ body {
 
 .country-flag {
     margin: 4px;
+    bottom: 20px;
 }
 
 .image-container {
@@ -70,21 +71,30 @@ body {
     font-weight: bold;
 }
 
+.movie-year,
+.country-flag {
+    position: absolute;
+}
+
 .movie-title {
     color: #040b12;
     font-size: 1.1em;
+    margin-top: 0.2vh;
 }
 
 .movie-year {
     color: #081708;
+    bottom: 0px;
+    transform: translate(5%, -0%);
 }
-
 
 .movie-poster {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     width: 140px;
     height: 193px;
 }
+
+
 
 .tooltip {
     position: absolute;
@@ -101,17 +111,16 @@ body {
     white-space: nowrap;
     transition: opacity 0.3s;
     z-index: 30;
-
 }
 
 .image-container:hover .tooltip {
     visibility: visible;
     opacity: 1;
-
 }
 
 .movie:hover {
     transform: scale(1.1);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
     z-index: 15;
 }
 
@@ -121,14 +130,12 @@ body {
 .list-movies-title {
     max-height: 100%;
     height:auto;
-
 }
 
 .movie-grid {
   margin-top: 20px;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .movie {
@@ -146,13 +153,14 @@ body {
 
 .movie-details {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
 }
 
 .flags, .movie-title, .movie-year {
+    position: relative;
     margin-right: 20px;
     margin-bottom: 10px;
+    margin-top: 10px;
     background: none;
 }
 
@@ -162,7 +170,6 @@ body {
 
 .movie-stats {
     max-width: 100%;
-
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -171,4 +178,12 @@ body {
 .movie:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+
+.movie-year {
+    transform: translate(0%, -0%);
+}
+.country-flag {
+    top: -1vh;
+}
 }
