@@ -1,5 +1,4 @@
 from json import JSONDecodeError
-
 from storage.istorage import IStorage
 import json
 
@@ -23,7 +22,7 @@ class StorageJson(IStorage):
             with open(self._file_path, "r", encoding="utf-8") as handle:
                 return json.loads(handle.read())
         except (FileNotFoundError, JSONDecodeError):
-            self.save_file("{}")
+            self.save_file({})
             return {}
 
     def add_movie(self, title, year, rating, poster, url, flag):
@@ -38,6 +37,7 @@ class StorageJson(IStorage):
         :param flag: link to the countries of origins flags or backup flag file path as string
         """
         movies = self.list_movies()
+        print(type(movies))
         movies[title] = {
             "year": year,
             "rating": rating,

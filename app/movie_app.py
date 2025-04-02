@@ -193,8 +193,8 @@ class MovieApp:
                   f"{rating_list[round(len(rating_list) / 2)]}{Colors.reset}")
         else:
             print(f"Median movie rating: {Colors.blue}"
-                  f"{((rating_list[round(len(rating_list) / 2)]
-                       + rating_list[round(len(rating_list) / 2 + 1)]) / 2)}{Colors.reset}")
+                  f"{round((rating_list[len(rating_list) // 2]
+                       + rating_list[len(rating_list) // 2 - 1]) / 2, 2)}{Colors.reset}")
 
     @staticmethod
     def _best_movie(movies):
