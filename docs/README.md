@@ -15,7 +15,7 @@ is designed for showcasing the oop-approach to the former movie project. Works w
 To install this project, simply clone the repository and install the dependencies
 If you want to use the data fetcher, you need to grab a key from https://www.omdbapi.com/apikey.aspx
 and create a .env file containing your personal api key, The .env just needs the following line:
-API_KEY="<your key>"
+API_KEY="your key"
 
 ## Usage
 
