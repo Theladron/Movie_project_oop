@@ -5,8 +5,6 @@ from utils.colors import Colors
 from utils.file_manager import get_database_name, parse_argument
 
 
-
-
 def main():
     """Handles program start parameters and initializes the movie app."""
     # parsing the start parameter
