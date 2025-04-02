@@ -1,10 +1,12 @@
-from app.user_input import user_int_input, user_string_input
-from jinja2 import Environment, FileSystemLoader
-from utils.colors import Colors
-from dotenv import load_dotenv
-import requests
-import random
 import os
+import random
+
+import requests
+from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
+
+from app.user_input import user_int_input, user_string_input
+from utils.colors import Colors
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -194,7 +196,7 @@ class MovieApp:
         else:
             print(f"Median movie rating: {Colors.blue}"
                   f"{round((rating_list[len(rating_list) // 2]
-                       + rating_list[len(rating_list) // 2 - 1]) / 2, 2)}{Colors.reset}")
+                            + rating_list[len(rating_list) // 2 - 1]) / 2, 2)}{Colors.reset}")
 
     @staticmethod
     def _best_movie(movies):

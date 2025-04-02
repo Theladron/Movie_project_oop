@@ -1,6 +1,6 @@
-from storage.storage_json import StorageJson
-from storage.storage_csv import StorageCsv
 from app.movie_app import MovieApp
+from storage.storage_csv import StorageCsv
+from storage.storage_json import StorageJson
 from utils.colors import Colors
 from utils.file_manager import get_database_name, parse_argument
 
