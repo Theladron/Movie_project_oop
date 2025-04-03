@@ -229,7 +229,7 @@ class MovieApp:
     def _command_random_movie(self):
         """prints a random movie with year and rating"""
         movies = self._storage.list_movies()
-        r_number = random.randint(0, len(movies))
+        r_number = random.randint(0, len(movies) - 1)
         counter = 0
         print(f"{Colors.cyan}Your movie of choice is:{Colors.reset}")
         for movie in movies:
@@ -297,6 +297,7 @@ class MovieApp:
                                 f"{Colors.green} (leave blank for no "
                                 f"end year): {Colors.reset}")
         print(f"{Colors.cyan}Movies that match your criteria:{Colors.reset}")
+        movie_found = False
         if not min_rat:
             min_rat = 0
         if not start:
@@ -307,12 +308,16 @@ class MovieApp:
                         and int(movies[movie]["year"]) >= start):
                     print(f"{movie} ({movies[movie]["year"]}):"
                           f" {Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
+                    movie_found = True
         else:
             for movie in movies:
                 if (float(movies[movie]["rating"]) >= min_rat
                         and start <= int(movies[movie]["year"]) <= end):
                     print(f"{movie} ({movies[movie]["year"]}):"
                           f" {Colors.blue}{movies[movie]["rating"]}{Colors.reset}")
+                    movie_found = True
+        if not movie_found:
+            print(f"{Colors.red}No movies found for your filter options.{Colors.reset}")
 
     def _generate_website(self):
         movies = self._storage.list_movies()

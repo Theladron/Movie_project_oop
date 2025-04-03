@@ -38,7 +38,6 @@ class StorageJson(IStorage):
         :param flag: link to the countries of origins flags or backup flag file path as string
         """
         movies = self.list_movies()
-        print(type(movies))
         movies[title] = {
             "year": year,
             "rating": rating,
