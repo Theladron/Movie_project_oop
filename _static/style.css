@@ -54,8 +54,8 @@ body {
 .movie {
     position: relative;
     background: #d6a03c;
-    width: 17.5vh;
-    height: 34vh;
+    width: 140px;
+    height: 280px;
     border-style:solid;
     border-radius: 5px;
     border-width: 2px;
