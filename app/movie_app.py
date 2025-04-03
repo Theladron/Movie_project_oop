@@ -359,7 +359,7 @@ class MovieApp:
             {Colors.blue}10.{Colors.reset} Filter movies
             {Colors.blue}11.{Colors.reset} Generate Website
                 """)
-            u_input = user_int_input(f"{Colors.blue}Enter choice (1-10): {Colors.reset}")
+            u_input = user_int_input(f"{Colors.blue}Enter choice (1-11): {Colors.reset}")
             if not self._storage.list_movies():
                 if not (u_input == 2 or u_input == 0):
                     print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "

@@ -56,7 +56,7 @@ def user_int_input(prompt):
                       f"Please enter a positive, whole number.{Colors.reset}")
 
             # exception for menu choice
-            elif "Enter Choice (1-11): " in prompt and user_input > 11:
+            elif "Enter choice (1-11): " in prompt and user_input > 11:
                 print(f"{Colors.bold}{Colors.red}Error{Colors.reset}{Colors.red}. "
                       f"Please enter a whole number between 0-11.{Colors.reset}")
             else:
